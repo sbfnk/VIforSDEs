@@ -1,11 +1,12 @@
 import os
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
 import tensorflow as tf
+import tensorflow_probability as tfp
 # python data types
 import numpy as np
 
-tfd = tf.contrib.distributions
-tfb = tfd.bijectors
+tfd = tfp.distributions
+tfb = tfp.bijectors
 
 DTYPE = tf.float32
 NP_DTYPE = np.float32
@@ -69,7 +70,7 @@ def ELBO(obs, vi_paths, vi_mu, vi_sigma, params, priors, p, dt):
         [tf.reshape(vi_paths[:, 0, 1:], [-1, 1]), tf.reshape(vi_paths[:, 1, 1:], [-1, 1])], 1)
 
     gen_dist = tfd.TransformedDistribution(distribution=tfd.MultivariateNormalTriL(
-        loc=x_path_mean + dt * vi_mu, scale_tril=tf.sqrt(dt) * vi_sigma), bijector=tfb.Softplus(event_ndims=1))
+        loc=x_path_mean + dt * vi_mu, scale_tril=tf.sqrt(dt) * vi_sigma), bijector=tfb.Softplus())
 
     gen_logprob = gen_dist.log_prob(x_path_eval)
 

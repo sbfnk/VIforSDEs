@@ -1,13 +1,14 @@
 import os
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
 import tensorflow as tf
+import tensorflow_probability as tfp
 # python data types
 import numpy as np
 # model-specific data
 from lotka_volterra_data import *
 
-tfd = tf.contrib.distributions
-tfb = tfd.bijectors
+tfd = tfp.distributions
+tfb = tfp.bijectors
 
 DTYPE = tf.float32
 NP_DTYPE = np.float32

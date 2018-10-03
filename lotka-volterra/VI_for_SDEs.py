@@ -10,8 +10,8 @@ from lotka_volterra_data_augmentation import *
 from lotka_volterra_loss import ELBO
 from network_utils import Weight, Bias
 
-tfd = tf.contrib.distributions
-tfb = tfd.bijectors
+tfd = tfp.distributions
+tfb = tfp.bijectors
 
 DTYPE = tf.float32
 NP_DTYPE = np.float32
@@ -158,7 +158,7 @@ class Model():
         :param sigma_nn: diffusion matrix from RNN as cholesky factor
         '''
         out_dist = tfd.TransformedDistribution(distribution=tfd.MultivariateNormalTriL(
-            loc=inp + self.dt * tf.squeeze(mu_nn), scale_tril=tf.sqrt(self.dt) * sigma_nn), bijector=tfb.Softplus(event_ndims=1))
+            loc=inp + self.dt * tf.squeeze(mu_nn), scale_tril=tf.sqrt(self.dt) * sigma_nn), bijector=tfb.Softplus())
         out = tf.expand_dims(out_dist.sample(), 1)
         return out
 
